@@ -202,6 +202,15 @@ export async function start_coinbase_session(domain_name,stx_address)
 	document.location.href = result.session_url || `https://commerce.coinbase.com/charges/${result.session_id}`;
 	}
 
+export async function start_opennode_session(domain_name,stx_address)
+	{
+	let result = await payment_api_call('new-opennode-session',{domain_name,stx_address,return_to:document.location.href});
+	if (result.error)
+		throw result;
+		//return console.error(result.error);
+	document.location.href = result.session_url || `https://checkout.opennode.com/${result.id}`;
+	}
+
 export async function fetch_api_domain_status(domain_name)
 	{
 	try

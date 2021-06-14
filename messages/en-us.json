@@ -55,6 +55,7 @@
 		"stx": "Stacks",
 		"btc": "Bitcoin",
 		"usd": "US Dollars",
+		"ln": "Lightning",
 		"none": "None"
 	},
 	"page": {

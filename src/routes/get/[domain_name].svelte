@@ -10,7 +10,7 @@
 		delete_domain_status,
 		domain_status} from '../../lib/client';
 	import {session,username,stx_address,sign_out} from '../../session';
-	import {start_stripe_session,start_coinbase_session,domain_fiat_price} from '../../lib/utils';
+	import {start_stripe_session,start_coinbase_session,start_opennode_session,domain_fiat_price} from '../../lib/utils';
 	import {t} from '../../lib/i18n';
 	import {tx,pending,failed, succeeded} from '../../lib/transactions';
 	
@@ -30,9 +30,10 @@
 	let transactions_pending, transactions_failed, transactions_succeeded;
 	
 	const payment_options = {
-		btc: start_coinbase_session,
-		usd: start_stripe_session,
+//		btc: start_coinbase_session,
+//		usd: start_stripe_session,
 		stx: domain_purchase_prepare,
+		ln: start_opennode_session
 	};
 
 	async function try_again()
@@ -243,6 +244,9 @@
 	.payment_methods > label.btc{
 		background-image: url('/bitcoin.svg');
 	}
+	.payment_methods > label.ln{
+		background-image: url('/lightning.svg');
+	}
 	.payment_methods > label.usd{
 		background-image: url('/usd.svg');
 		background-size: 50%;
@@ -326,7 +330,7 @@
 				<p>{$t('page.get.select_payment_method')}</p>
 			</div>
 			<div class="payment_methods">
-				{#each Object.keys(payment_options).filter(option => option === 'stx') as option}
+				{#each Object.keys(payment_options) as option}
 					<label class="{option}" class:selected={payment_method === option}>
 						<input type="radio" bind:group={payment_method} value={option}/>
 						{$t(`components.${option}`)}
